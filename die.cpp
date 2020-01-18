@@ -1,23 +1,19 @@
-//
-// Created by mishi9 on 15-01-20.
-//
-
 #include "die.h"
 
-Die::Die() {
+die::die() {
     numSides = 6;
     side = (int) random() % numSides + 1;
 }
 
-Die::Die(unsigned int numSides) {
+die::die(unsigned int numSides) {
     this->numSides = numSides;
     side = (int) random() % numSides + 1;
 }
 
-unsigned int Die::roll() {
+unsigned int die::roll() {
     side = (int) random() % numSides + 1;
 }
 
-unsigned int Die::getSide() {
+unsigned int die::getSide() {
     return side;
 }
