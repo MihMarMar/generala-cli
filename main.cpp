@@ -20,7 +20,7 @@ int main() {
     while (!game.isOver()) {
         game.playTurn();
     }
-
+    std::cout << "\r\nGAME OVER\r\n";
     cout << "Player " << game.getWinner().getName() << " won with a score of: " << game.getWinner().getScore()
          << "\r\n";
     cout << "Press any key to close";

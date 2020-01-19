@@ -50,8 +50,6 @@ private:
     int winnerIndex;
     int roll;
 
-    void advancePlayer();
-
     void printRoll() const;
 
     void printAvailableCategories();
@@ -66,6 +64,9 @@ private:
 
     void initializeCategories();
 
+    void addPointsSequence(player &player);
+
+    void scratchCategorySequence();
 
 public:
 

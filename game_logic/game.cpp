@@ -21,84 +21,93 @@ void game::addPlayer(std::string name) {
 
 void game::playTurn() {
     turn++;
-    roll = 0;
-    auto &player = players.at(playerIndex);
-    std::cout << "Turn " << turn << " of " << maxTurns << "\r\n";
-    std::cout << "Player " << player.getName() << "'s turn. ";
-    std::cout << "Score until now: " << player.getScore() << "\r\n";
-    for (die &d : dice) {
-        d.roll();
-    }
-    while (++roll < MAX_ROLLS + 1) {
-        std::cout << "Roll " << roll << " of " << MAX_ROLLS << "!\r\n";
-        printRoll();
+    playerIndex = 0;
+    while (true) {
 
-        // Check for roll one win
-        if (roll == 1 && calculateScore(dice, GENERALA) != -1) {
-            player.addScore(P_GENERALA);
-            winnerIndex = playerIndex;
-            over = true;
-            return;
-        }
 
-        std::cout << "Mark which dice you want to reroll! (y/n y/n y/n y/n y/n) \r\n";
+        roll = 0;
+        auto &player = players.at(playerIndex);
+        std::cout << "Turn " << turn << " of " << maxTurns << "\r\n";
+        std::cout << "Player " << player.getName() << "'s turn. ";
+        std::cout << "Score until now: " << player.getScore() << "\r\n";
         for (die &d : dice) {
-            char choice;
-            std::cin >> choice;
-            if (choice == 'y') {
-                d.roll();
+            d.roll();
+        }
+        while (++roll < MAX_ROLLS + 1) {
+            std::cout << "Roll " << roll << " of " << MAX_ROLLS << "!\r\n";
+            printRoll();
+
+            // Check for roll one win
+            if (roll == 1 && calculateScore(dice, GENERALA) != -1) {
+                player.addScore(P_GENERALA);
+                winnerIndex = playerIndex;
+                over = true;
+                return;
+            }
+
+            std::cout << "Mark which dice you want to reroll! (y/n y/n y/n y/n y/n) \r\n";
+            for (die &d : dice) {
+                char choice;
+                std::cin >> choice;
+                if (choice == 'y') {
+                    d.roll();
+                }
             }
         }
+
+
+        while (true) {
+            printRoll();
+            std::cout << "Do you want to add points(p) or scratch(s) a category?\r\n";
+            char choice;
+            std::cin >> choice;
+            if (choice == 'p') {
+                addPointsSequence(player);
+                break;
+            } else if (choice == 's') {
+                scratchCategorySequence();
+                break;
+            }
+            // if choice does not match loop again
+        } // end of points/scratch loop
+        playerIndex++;
+        if (playerIndex == players.size()) {
+            break;
+        }
     }
 
-
-    while (true) {
-        printRoll();
-        std::cout << "Do you want to add points(p) or scratch(s) a category?\r\n";
-        char choice;
-        std::cin >> choice;
-        if (choice == 'p') {
-
-            // get points
-            printAvailableCategories();
-            int scoreToAdd;
-            do {
-                std::cout << "Choose a number: ";
-                int scoreChoice;
-                std::cin >> scoreChoice;
-                scoreToAdd = calculateScore(dice, scoreChoice);
-                if (scoreToAdd != -1) {
-                    player.addScore(scoreToAdd);
-                    std::cout << "Now " << player.getName() << "'s score is " << player.getScore() << "\r\n";
-                }
-            } while (scoreToAdd == -1);
-            break;
-        } else if (choice == 's') {
-
-            // scratch category
-            bool success;
-            do {
-                printAvailableCategories();
-                std::cout << "Choose a number: ";
-                int scratchChoice;
-                std::cin >> scratchChoice;
-                success = scratchCategory(scratchChoice);
-            } while (!success);
-            break;
-        } // end of scratch
-        // if choice does not match loop again
-
-    } // end of points/scratch loop
-
-
-    advancePlayer();
-
     if (turn == maxTurns) {
-        std::cout << "\r\nGAME OVER";
         over = true;
         findWinner();
     }
-} // playTurn()
+}
+
+void game::scratchCategorySequence() {// scratch category
+    bool success;
+    do {
+        this->printAvailableCategories();
+        std::cout << "Choose a number: ";
+        int scratchChoice;
+        std::cin >> scratchChoice;
+        success = this->scratchCategory(scratchChoice);
+    } while (!success);
+}
+
+void game::addPointsSequence(player &player) {// get points
+    this->printAvailableCategories();
+    int scoreToAdd;
+    do {
+        std::cout << "Choose a number: ";
+        int scoreChoice;
+        std::cin >> scoreChoice;
+        scoreToAdd = calculateScore(this->dice, scoreChoice);
+        if (scoreToAdd != -1) {
+            player.addScore(scoreToAdd);
+            std::cout << "Now " << player.getName() << "'s score is " << player.getScore() << "\r\n";
+        }
+    } while (scoreToAdd == -1);
+}
+// playTurn()
 
 
 void game::printRoll() const {
@@ -111,13 +120,6 @@ void game::printRoll() const {
 
 bool game::isOver() const {
     return over;
-}
-
-void game::advancePlayer() {
-    playerIndex++;
-    if (playerIndex == players.size()) {
-        playerIndex = 0;
-    }
 }
 
 player game::getWinner() {
