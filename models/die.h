@@ -16,7 +16,7 @@ public:
 
 private:
     unsigned int numSides;
-    unsigned int side;
+    unsigned int side = 0;
 };
 
 

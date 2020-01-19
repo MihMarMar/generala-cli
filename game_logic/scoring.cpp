@@ -115,7 +115,10 @@ int calculateStraight(std::vector<die> &dice) {
 
     // Rules say that if all numbers are different there's a straight
     sortDice(dice);
-    auto identicalAt = std::adjacent_find(dice.begin(), dice.end());
+    auto identicalAt = std::adjacent_find(dice.begin(), dice.end(),
+                                          [](die &d1, die &d2) {
+                                              return d1.getSide() == d2.getSide();
+                                          });
     if (identicalAt != dice.end()) {
         return SCORE_NOT_PRESENT;
     }
@@ -148,7 +151,7 @@ int calculateFourOfAKind(std::vector<die> &dice) {
     }
     sortDice(dice);
 
-    int i = 0;
+    int i = 1;
     unsigned int prevSide = 0;
     for (die d : dice) {
         unsigned int currentSide = d.getSide();
@@ -156,7 +159,7 @@ int calculateFourOfAKind(std::vector<die> &dice) {
             i++;
             prevSide = currentSide;
         } else {
-            i = 0;
+            i = 1;
             prevSide = currentSide;
         }
         if (i == 4) {
@@ -182,6 +185,34 @@ int calculateGenerala(std::vector<die> &dice) {
 
     // All match if function has still not returned so return the score for Generala.
     return P_GENERALA;
+}
+
+int calculateScore(std::vector<die> &dice, unsigned int category) {
+    switch (category) {
+        case ONES:
+            return calculateOnes(dice);
+        case TWOS:
+            return calculateTwos(dice);
+        case THREES:
+            return calculateThrees(dice);
+        case FOURS:
+            return calculateFours(dice);
+        case FIVES:
+            return calculateFives(dice);
+        case SIXES:
+            return calculateSixes(dice);
+        case STRAIGHT:
+            return calculateStraight(dice);
+        case FULL_HOUSE:
+            return calculateFullHouse(dice);
+        case FOUR_OF_A_KIND:
+            return calculateFourOfAKind(dice);
+        case GENERALA:
+            return calculateGenerala(dice);
+        default:
+            return SCORE_NOT_PRESENT;
+
+    }
 }
 
 void sortDice(std::vector<die> &dice) {

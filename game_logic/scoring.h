@@ -12,6 +12,7 @@
  * Otherwise the score for the combination is returned.
  */
 
+int calculateScore(std::vector<die> &, unsigned int);
 
 /**
  * Get the score of ones
