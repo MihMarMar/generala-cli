@@ -3,4 +3,4 @@ project(Generala)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Generala main.cpp die.cpp die.h player.cpp player.h game.cpp game.h)
+add_executable(Generala main.cpp models/die.cpp models/die.h models/player.cpp models/player.h game_logic/game.cpp game_logic/game.h game_logic/scoring.cpp game_logic/scoring.h)
