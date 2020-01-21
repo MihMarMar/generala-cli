@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
     cout << "Welcome to Generala!" << "\r\n";
-    game game(2);
+    game game(5);
     while (true) {
         cout << "Do you want to add another player? (y/n) \r\n";
         char choice;
