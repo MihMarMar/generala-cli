@@ -4,7 +4,6 @@
 
 #include "scoring.h"
 
-void sortDice(std::vector<die> &dice);
 
 int calculateOnes(std::vector<die> &dice) {
     if (dice.size() != 5) {

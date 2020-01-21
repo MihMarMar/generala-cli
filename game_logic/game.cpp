@@ -22,9 +22,7 @@ void game::addPlayer(std::string name) {
 void game::playTurn() {
     turn++;
     playerIndex = 0;
-    while (true) {
-
-
+    while (true) { // this loops once for each player and breaks when the last player plays his turn
         roll = 0;
         auto &player = players.at(playerIndex);
         std::cout << "Turn " << turn << " of " << maxTurns << "\r\n";
@@ -56,7 +54,7 @@ void game::playTurn() {
         }
 
 
-        while (true) {
+        while (true) { // after the third roll ask the player what he wants to do
             printRoll();
             std::cout << "Do you want to add points(p) or scratch(s) a category?\r\n";
             char choice;
@@ -70,13 +68,14 @@ void game::playTurn() {
             }
             // if choice does not match loop again
         } // end of points/scratch loop
-        playerIndex++;
-        if (playerIndex == players.size()) {
-            break;
-        }
-    }
 
-    if (turn == maxTurns) {
+        playerIndex++;
+        if (playerIndex == players.size()) { // if all players played a turn, end the loop
+            break; // break from a player's turn loop
+        }
+    } // player's turn loop
+
+    if (turn == maxTurns) { // if game isn't over by rolling a generala from the first time
         over = true;
         findWinner();
     }
@@ -90,7 +89,7 @@ void game::scratchCategorySequence() {// scratch category
         int scratchChoice;
         std::cin >> scratchChoice;
         success = this->scratchCategory(scratchChoice);
-    } while (!success);
+    } while (!success); // repeat until a category is scratched
 }
 
 void game::addPointsSequence(player &player) {// get points
@@ -105,9 +104,8 @@ void game::addPointsSequence(player &player) {// get points
             player.addScore(scoreToAdd);
             std::cout << "Now " << player.getName() << "'s score is " << player.getScore() << "\r\n";
         }
-    } while (scoreToAdd == -1);
+    } while (scoreToAdd == -1); // repeat until a valid combination is chosen
 }
-// playTurn()
 
 
 void game::printRoll() const {

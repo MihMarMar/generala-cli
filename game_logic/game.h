@@ -54,10 +54,6 @@ private:
 
     void printAvailableCategories();
 
-    /**
-     * scratch a category
-     * @return true if successful, false otherwise
-     */
     bool scratchCategory(int);
 
     static std::string getCategoryString(int);
@@ -68,19 +64,38 @@ private:
 
     void scratchCategorySequence();
 
+    void findWinner();
+
 public:
-
-    [[nodiscard]] bool isOver() const;
-
+    /**
+     * initialize the game
+     * @param maxTurns how many maximum turns are played if a player doesn't win earlier
+     */
     explicit game(int maxTurns);
 
+
+    /**
+     * poll if game is over
+     * @return true if games is over, false othewise
+     */
+    [[nodiscard]] bool isOver() const;
+
+    /**
+     * add a player to the game
+     */
     void addPlayer(std::string);
 
+    /**
+     * play a single turn of the game
+     */
     void playTurn();
 
+    /**
+     * get the winner
+     * @return a reference to the winner
+     */
     player getWinner();
 
-    void findWinner();
 };
 
 

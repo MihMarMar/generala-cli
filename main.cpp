@@ -16,10 +16,12 @@ int main() {
             cin >> name;
             game.addPlayer(name);
         } else break;
-    }
+    } // end of add player loop
+
     while (!game.isOver()) {
         game.playTurn();
-    }
+    } // end of game loop
+
     std::cout << "\r\nGAME OVER\r\n";
     cout << "Player " << game.getWinner().getName() << " won with a score of: " << game.getWinner().getScore()
          << "\r\n";
